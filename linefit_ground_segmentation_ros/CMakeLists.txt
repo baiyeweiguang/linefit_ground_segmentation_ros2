@@ -14,3 +14,9 @@ ament_auto_add_executable(ground_segmentation_node src/ground_segmentation_node.
 ament_auto_add_executable(ground_segmentation_test_node src/ground_segmentation_test_node.cc)
 
 ament_auto_package(INSTALL_TO_SHARE launch)
+
+#############
+# QTCREATOR #
+#############
+FILE(GLOB_RECURSE LibFiles "include/*")
+add_custom_target(headers SOURCES ${LibFiles})

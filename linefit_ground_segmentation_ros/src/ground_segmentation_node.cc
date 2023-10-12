@@ -24,7 +24,7 @@ public:
   std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
   rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr cloud_sub_;
   GroundSegmentationParams params_;
-  GroundSegmentation segmenter_;
+  std::shared_ptr<GroundSegmentation> segmenter_;
   std::string gravity_aligned_frame_;
 };
 
@@ -63,6 +63,9 @@ SegmentationNode::SegmentationNode(const rclcpp::NodeOptions &node_options)
   if (this->get_parameter("max_fit_error", max_fit_error)) {
     params_.max_error_square = max_fit_error * max_fit_error;
   }
+
+  segmenter_ = std::make_shared<GroundSegmentation>(params_);
+
   std::string ground_topic, obstacle_topic, input_topic;
   ground_topic = this->declare_parameter("ground_output_topic", "ground_cloud");
   obstacle_topic =
@@ -118,7 +121,7 @@ void SegmentationNode::scanCallback(
   const pcl::PointCloud<pcl::PointXYZ> &cloud_proc =
       is_original_pc ? cloud : cloud_transformed;
 
-  segmenter_.segment(cloud_proc, &labels);
+  segmenter_->segment(cloud_proc, &labels);
   pcl::PointCloud<pcl::PointXYZ> ground_cloud, obstacle_cloud;
   for (size_t i = 0; i < cloud.size(); ++i) {
     if (labels[i] == 1)
