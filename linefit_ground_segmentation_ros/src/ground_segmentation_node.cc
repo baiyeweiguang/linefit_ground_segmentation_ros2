@@ -29,7 +29,7 @@ public:
 };
 
 SegmentationNode::SegmentationNode(const rclcpp::NodeOptions &node_options)
-    : Node("segmentation_node", node_options) {
+    : Node("ground_segmentation", node_options) {
   gravity_aligned_frame_ =
       this->declare_parameter("gravity_aligned_frame", "gravity_aligned");
 

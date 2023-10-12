@@ -13,4 +13,4 @@ ament_auto_find_build_dependencies()
 ament_auto_add_executable(ground_segmentation_node src/ground_segmentation_node.cc)
 ament_auto_add_executable(ground_segmentation_test_node src/ground_segmentation_test_node.cc)
 
-ament_auto_package()
+ament_auto_package(INSTALL_TO_SHARE launch)
